@@ -1,0 +1,25 @@
+#!/bin/bash
+# Set random wall paper every 5 minutes
+
+skip_wallpaper() {
+	# Get a list of wallpapers once
+	WALLPAPER=$( find ~/Pictures/wallpapers/ -type f \( -iname *.jpg -o -iname *.png \) )
+
+	MONITOR_COUNT=$(xrandr --listmonitors | grep -o -P '(?<= )\d(?=$)')
+	for ((i=0;i<MONITOR_COUNT;i++)); do
+		RANDOM_WALLPAPER=$( echo "$WALLPAPER" | shuf -n 1 )
+		nitrogen --head=$i --set-zoom-fill $RANDOM_WALLPAPER;
+	done
+}
+
+case $1 in
+	start)
+		while true; do
+			skip_wallpaper
+			sleep 5m # Update every 5 minutes
+		done &
+		;;
+	skip)
+		skip_wallpaper
+		;;
+esac
