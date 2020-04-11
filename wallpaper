@@ -16,7 +16,7 @@ case $1 in
 	start)
 		while true; do
 			skip_wallpaper
-			sleep 5m # Update every 5 minutes
+			sleep "$2m" # Update every given number of minutes
 		done &
 		;;
 	skip)
