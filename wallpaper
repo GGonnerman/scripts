@@ -3,7 +3,7 @@
 
 skip_wallpaper() {
 	# Get a list of wallpapers once
-	WALLPAPER=$( find ~/Pictures/Wallpapers/ -type f \( -iname *.jpg -o -iname *.png \) )
+	WALLPAPER=$( find ~/Pictures/Wallpapers/ -type f \( -iname '*.jpg' -o -iname '*.png' \) )
 
 	MONITOR_COUNT=$(xrandr --listmonitors | grep -o -P '(?<= )\d(?=$)')
 	for ((i=0;i<MONITOR_COUNT;i++)); do
