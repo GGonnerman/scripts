@@ -1,5 +1,5 @@
 #!/bin/bash
-# Set random wall paper every 5 minutes
+# Set random wall paper every given minutes
 
 skip_wallpaper() {
 	# Get a list of wallpapers once
