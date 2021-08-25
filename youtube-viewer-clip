@@ -1,0 +1,8 @@
+#!/bin/bash
+ID=$( xdotool getactivewindow )
+MATCH=$( xdotool getactivewindow getwindowname | grep -Pi "brave$" )
+
+[ -z "$MATCH" ] || ( xdotool windowactivate $ID && sleep 0.2 && xdotool key "k" && xdotool key "ctrl+l" && sleep 0.2 && xdotool key "ctrl+c" )
+
+YOUTUBE_LINK=$( xclip -sel clipboard -o )
+youtube-viewer $YOUTUBE_LINK &>/dev/null &

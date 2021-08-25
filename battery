@@ -1,0 +1,8 @@
+#!/bin/bash
+CAP="$( cat /sys/class/power_supply/BAT1/capacity )"
+STAT="$( cat /sys/class/power_supply/BAT1/status )"
+#echo $(upower -i $(upower -e | grep 'BAT') | grep -Pio "(?<=percentage:).*" | sed 's/ //g')
+
+COLOR="#029D80"
+[[ $STAT == *"Discharging"* ]] && COLOR="#F9d210"
+echo "<fc=$COLOR>[BAT $CAP%]</fc>"

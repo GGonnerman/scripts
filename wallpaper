@@ -1,0 +1,38 @@
+#!/bin/bash
+# Set random wall paper every given minutes
+
+# !!!
+# DONT USE THIS. ITS VERY BROKEN
+# !!!
+
+skip_wallpaper() {
+	# Get a list of wallpapers once
+	WALLPAPER=$( find ~/Pictures/Wallpapers/ -type f \( -iname '*.jpg' -o -iname '*.png' \) )
+
+        # Empty out the current nitrogen config
+        rm $HOME/.config/nitrogen/bg-saved.cfg
+
+	MONITOR_COUNT=2 #$(xrandr --listmonitors | grep -o -P '(?<= )\d(?=$)')
+	RANDOM_WALLPAPER=$( echo "$WALLPAPER" | shuf -n 1 )
+	for ((i=0;i<MONITOR_COUNT;i++)); do
+		nitrogen --head=$i --set-zoom-fill $RANDOM_WALLPAPER;
+
+                echo -e "[xin_$i]\nfile=$RANDOM_WALLPAPER\nmode=5\nbgcolor=#000000\n" >> $HOME/.config/nitrogen/bg-saved.cfg
+	done
+}
+
+case $1 in
+	start)
+		while true; do
+			skip_wallpaper
+			if [ "$2" = "" ]; then
+			    sleep "5m" # Update every given number of minutes
+			else
+			    sleep "$2m" # Update every given number of minutes
+			fi
+		done &
+		;;
+	skip)
+		skip_wallpaper
+		;;
+esac

@@ -1,0 +1,14 @@
+STATE=$( mocp -Q "%state" )
+[ -z $STATE ] && echo "" && exit
+[ $STATE == "PAUSE" ] && echo "Paused..." && exit
+[ $STATE != "PLAY" ] && echo "" && exit
+CURRENT_SECONDS=$( mocp -Q "%cs" )
+TOTAL_SECONDS=$( mocp -Q "%ts" )
+PERCENT=$(( ($CURRENT_SECONDS * 100) / $TOTAL_SECONDS ))
+FORMATTED_PERCENT=$( printf %02d $PERCENT )
+[ $PERCENT -lt 10 ] && FORMATTED_PERCENT=$( echo $FORMATTED_PERCENT | tr "0" "-")
+# SONG_NAME=$( echo $( mocp -Q "%file" | sed 's~.*/~~' | sed -r 's~(\(|\[)(Lyric|Official|Music|Live|Audio).*~-~' | grep -Po '(?!.*- ).*(?=-)' ) | sed 's/ *$//g' )
+SONG_NAME=$( mocp -Q "%song" )
+# [ -z $SONG_NAME ] && SONG_NAME=$( mocp -Q "%song" )
+echo "$SONG_NAME $FORMATTED_PERCENT%"
+

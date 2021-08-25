@@ -1,0 +1,6 @@
+MASTER=$( amixer get Master )
+VOLUME=$( echo $MASTER | grep -Po "\d+%" | head -1 )
+COLOR="#d59bff"
+[[ $MASTER == *"[off]"* ]] && COLOR="#886e9b"
+#echo "<fc=#666666> | </fc><fc=$COLOR>[AUD $VOLUME]</fc>"
+echo "<fc=$COLOR>[AUD $VOLUME]</fc>"

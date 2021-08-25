@@ -1,0 +1,2 @@
+#!/bin/bash
+youtube-sync --update-recursively /home/twoonesecond/Music/Sync

@@ -1,0 +1,58 @@
+#!/bin/bash
+
+cd /home/twoonesecond
+
+target_path="/media/backup"
+if ! mountpoint -q "${target_path}"; then
+  echo "${target_path} is not mounted. Verify this by running: mount -l"
+  exit 1
+fi
+
+include_paths=(
+  "/home/twoonesecond"
+)
+
+exclude_paths=(
+  ".asset-cache"
+  ".android"
+  ".backup"
+  ".bundle"
+  ".cache"
+  ".esy"
+  ".npm"
+  "cache"
+  "__pycache__"
+  "node_modules"
+  "tmp"
+  "[._]*.s[a-v][a-z]"
+  "[._]*.sw[a-p]"
+  "[._]s[a-rt-v][a-z]"
+  "[._]ss[a-gi-z]"
+  "[._]sw[a-p]"
+  "*~"
+  "[._]*.un~"
+)
+
+# rsync allows you to exclude certain paths. We're just looping over all of the
+# excluded items and build up separate --exclude flags for each one.
+for item in "${exclude_paths[@]}"
+do
+  exclude_flags="${exclude_flags} --exclude=${item}"
+done
+
+# rsync allows you to pass in a list of paths to copy. It expects a space
+# separated string, so that's what we're building up here.
+for item in "${include_paths[@]}"
+do
+  include_args="${include_args} ${item}"
+done
+
+# Finally, we just run rsync with a few flags:
+#  -a is archive mode so it keeps your original created and modified properties.
+#  -v is verbose mode to get a bit of extra output (useful for debugging).
+#  -R is relative mode. It ensures the included paths get created on the target.
+# -l = copy symlinks as symlinks (yep, we want this)
+# -P = show progress during transfer
+#  --dry-run ensures nothing gets written to the target (for testing purposes).
+#rsync -avR --dry-run ${exclude_flags} ${include_args} ${target_path}
+rsync -av --progress --stats --sparse --recursive --perms --links -H --delete ${exclude_flags} ${include_args} ${target_path}

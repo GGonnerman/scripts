@@ -1,0 +1,13 @@
+#SONG=$( /home/twoonesecond/bin/song-status )
+#[ -z "$SONG" ] && exit
+#[ "$SONG" == "Not playing..." ] && exit
+#[ "$SONG" == "Paused..." ] && exit
+# echo "<fc=#d9ed76>[$SONG]</fc><fc=#666666> | </fc>"
+if [ $(mocp -Q '%state') == 'PLAY' ]; then
+    CURRENT_SECONDS=$( mocp -Q "%cs" )
+    TOTAL_SECONDS=$( mocp -Q "%ts" )
+    PERCENT=$(( ($CURRENT_SECONDS * 100) / $TOTAL_SECONDS ))
+    FORMATTED_PERCENT=$( printf %02d $PERCENT )
+    [ $PERCENT -lt 10 ] && FORMATTED_PERCENT=$( echo $FORMATTED_PERCENT | tr "0" "-")
+    echo "<fc=#b3afc2>$(mocp -Q '%song') $FORMATTED_PERCENT%</fc><fc=#666666> | </fc>"
+fi

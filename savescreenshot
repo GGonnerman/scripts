@@ -1,0 +1,26 @@
+#!/bin/bash
+
+dinput () {
+	dmenu -p "Name: " <&-
+}
+
+if [ ! -d ~/Pictures/Screenshots ]; then
+  mkdir -p ~/Pictures/Screenshots;
+fi
+
+pushd ~/Pictures/Screenshots >/dev/null
+
+name=$(dinput | sed -e 's/ /_/g')
+[ -z "$name" ] && name='%Y-%m-%d_$wx$h'
+
+if [[ -e $name.png || -L $name.png ]] ; then
+    i=0
+    while [[ -e $name-$i.png || -L $name-$i.png ]] ; do
+        let i++
+    done
+    name=$name-$i
+fi
+
+scrot --quality 100 --freeze --silent --select $name.png
+
+popd >/dev/null

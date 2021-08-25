@@ -1,0 +1,7 @@
+#!/bin/bash
+
+case $1 in
+	on) dconf write /org/gnome/desktop/peripherals/touchpad/send-events "'enabled'" ;;
+	off) dconf write /org/gnome/desktop/peripherals/touchpad/send-events "'disabled'" ;;
+	*) echo "'touchpad on' to enable, off to disable" ;;
+esac

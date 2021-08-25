@@ -1,0 +1,9 @@
+#!/bin/bash
+
+pushd /tmp >/dev/null
+
+name='%Y-%m-%d_$wx$h'
+
+scrot --quality 100 --freeze --silent --select $name.png --exec 'xclip -selection clipboard -t image/png -i $f' #&& xclip -selection clipboard -t image/png -i $name.png
+
+popd >/dev/null
