@@ -74,6 +74,18 @@ done
 
 ping -c1 unix.com &>/dev/null || ( echo "No internet connection detected, exitting" && exit 1 )
 
+if ! command -v youtube-dl &> /dev/null
+then
+    echo "youtube-dl could not be found; exiting"
+    exit 1
+fi
+
+if ! command -v atomicparsley &> /dev/null
+then
+    echo "atomicparsley could not be found; exiting"
+    exit
+fi
+
 if [[ -z $directory ]]
 then
 	if [[ -n $@ ]]
@@ -206,7 +218,7 @@ do
 		echo "$id" >> .youtube-sync-ids
 	fi
 	# If fast, continue; otherwise short random delay
-	$fast && sleep $[ ( $RANDOM % 30 )  + 5 ]s
+	$fast || echo "sleep $[ ( $RANDOM % 30 )  + 5 ]s"
 done
 
 # Rename to match current playlist order
