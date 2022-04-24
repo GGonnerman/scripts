@@ -1,3 +1,5 @@
+#!/bin/bash
+
 MASTER=$( amixer get Master )
 VOLUME=$( echo $MASTER | grep -Po "\d+%" | head -1 )
 COLOR="#d59bff"
